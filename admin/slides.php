@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   <title>Slides &laquo; Admin</title>
-  <link rel="stylesheet" href="/static
+  <link rel="stylesheet" href="../static
 /
 assets/vendors/bootstrap/css/bootstrap.css">
-  <link rel="stylesheet" href="/static
+  <link rel="stylesheet" href="../static
 /
 assets/vendors/font-awesome/css/font-awesome.css">
-  <link rel="stylesheet" href="/static
+  <link rel="stylesheet" href="../static
 /
 assets/vendors/nprogress/nprogress.css">
-  <link rel="stylesheet" href="/static
+  <link rel="stylesheet" href="../static
 /
 assets/css/admin.css">
-  <script src="/static
+  <script src="../static
 /
 assets/vendors/nprogress/nprogress.js"></script>
 </head>
@@ -79,7 +79,7 @@ assets/vendors/nprogress/nprogress.js"></script>
             <tbody>
               <tr>
                 <td class="text-center"><input type="checkbox"></td>
-                <td class="text-center"><img class="slide" src="/static
+                <td class="text-center"><img class="slide" src="../static
 /
 uploads/slide_1.jpg"></td>
                 <td>XIU功能演示</td>
@@ -90,7 +90,7 @@ uploads/slide_1.jpg"></td>
               </tr>
               <tr>
                 <td class="text-center"><input type="checkbox"></td>
-                <td class="text-center"><img class="slide" src="/static
+                <td class="text-center"><img class="slide" src="../static
 /
 uploads/slide_2.jpg"></td>
                 <td>XIU功能演示</td>
@@ -106,50 +106,11 @@ uploads/slide_2.jpg"></td>
     </div>
   </div>
 
-  <div class="aside">
-    <div class="profile">
-      <img class="avatar" src="/static
-/
-uploads/avatar.jpg">
-      <h3 class="name">布头儿</h3>
-    </div>
-    <ul class="nav">
-      <li>
-        <a href="index.php"><i class="fa fa-dashboard"></i>仪表盘</a>
-      </li>
-      <li>
-        <a href="#menu-posts" class="collapsed" data-toggle="collapse">
-          <i class="fa fa-thumb-tack"></i>文章<i class="fa fa-angle-right"></i>
-        </a>
-        <ul id="menu-posts" class="collapse">
-          <li><a href="posts.php">所有文章</a></li>
-          <li><a href="post-add.php">写文章</a></li>
-          <li><a href="categories.php">分类目录</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="comments.php"><i class="fa fa-comments"></i>评论</a>
-      </li>
-      <li>
-        <a href="users.php"><i class="fa fa-users"></i>用户</a>
-      </li>
-      <li class="active">
-        <a href="#menu-settings" data-toggle="collapse">
-          <i class="fa fa-cogs"></i>设置<i class="fa fa-angle-right"></i>
-        </a>
-        <ul id="menu-settings" class="collapse in">
-          <li><a href="nav-menus.php">导航菜单</a></li>
-          <li class="active"><a href="slides.php">图片轮播</a></li>
-          <li><a href="settings.php">网站设置</a></li>
-        </ul>
-      </li>
-    </ul>
-  </div>
-
-  <script src="/static
+ <?php include 'inc/sidebar.php';?>
+  <script src="../static
 /
 assets/vendors/jquery/jquery.js"></script>
-  <script src="/static
+  <script src="../static
 /
 assets/vendors/bootstrap/js/bootstrap.js"></script>
   <script>NProgress.done()</script>

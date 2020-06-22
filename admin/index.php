@@ -1,4 +1,9 @@
-
+<?php 
+	session_start();
+	if(empty($_SESSION['user_id'])){
+		header('Location:/autumn/admin/login.php');
+	}
+?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -12,8 +17,9 @@
 </head>
 <body>
   <script>NProgress.start()</script>
-
+	
   <div class="main">
+
     <nav class="navbar">
       <button class="btn btn-default navbar-btn fa fa-bars"></button>
       <ul class="nav navbar-nav navbar-right">

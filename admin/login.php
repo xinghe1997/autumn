@@ -1,26 +1,55 @@
 <?php
  if($_SERVER['REQUEST_METHOD'] === 'POST'){
     inspectUser();
+    
   }
 function inspectUser(){
+	require_once '../config.php';
     if(empty($_POST['email'])){
       echo 'ds';
       $GLOBALS['error'] = 'email不能为空';
       return;
     }
     if(empty($_POST['password'])){
-      echo 'ds';
       $GLOBALS['error'] = 'password不能为空';
       return;
     }
-    if($_POST['email'] != 'admin'){
+    #非空后判断用户密码是否正确
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    #连接数据库
+    $conn = getConnect();
+	if($conn == null){
+		 $GLOBALS['error'] = '数据库连接失败';
+		 return;
+	}
+	$sql = "select * from `users` where `email` = '{$email}' limit 1";
+	$query = $conn->query($sql);
+	if(!isset($query->num_rows)){
+		$GLOBALS['error'] = '用户名不存在';
+		return;
+	}
+	$result = $query->fetch_assoc();
+    if($email != $result['email']){
         $GLOBALS['error'] = 'email不正确';
         return ;
     }
-    if($_POST['password'] != 'root'){
+    if(md5($password) != $result['password']){
       $GLOBALS['error'] = 'password不正确';
       return;
     }
+	session_start();
+	$_SESSION['user_id'] = $result;
+	mysqli_free_result($query);
+	mysqli_close($conn);
+    header('Location:/autumn/admin/');
+}
+function getConnect(){
+	$conn = new mysqli(DB_HOST,DB_USER,DB_PASS,DB_NAME);
+	if($conn->connect_error){
+		return null;
+	}
+	return $conn;
 }
 ?>
 <!DOCTYPE html>
@@ -37,7 +66,7 @@ assets/css/admin.css">
 </head>
 <body>
   <div class="login">
-    <form class="login-wrap" action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
+    <form class="login-wrap" action="<?php echo $_SERVER['PHP_SELF']?>" method="post" novalidate>
       <img class="avatar" src="../static
 /
 assets/img/default.png">
@@ -49,7 +78,7 @@ assets/img/default.png">
     <?php endif?>
       <div class="form-group">
         <label for="email" class="sr-only">邮箱</label>
-        <input name="email" id="email" type="email" class="form-control" placeholder="邮箱" >
+        <input name="email" id="email" type="email" class="form-control" placeholder="邮箱" value="<?php echo isset($_POST['email'])? $_POST['email']:'';?>">
       </div>
       <div class="form-group">
         <label for="password" class="sr-only">密码</label>

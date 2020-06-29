@@ -5,8 +5,8 @@
   }
 function inspectUser(){
 	require_once '../config.php';
+	require_once 'inc/getConnect.php';
     if(empty($_POST['email'])){
-      echo 'ds';
       $GLOBALS['error'] = 'email不能为空';
       return;
     }
@@ -25,7 +25,8 @@ function inspectUser(){
 	}
 	$sql = "select * from `users` where `email` = '{$email}' limit 1";
 	$query = $conn->query($sql);
-	if(!isset($query->num_rows)){
+	echo $query->num_rows;
+	if(empty($query->num_rows)){
 		$GLOBALS['error'] = '用户名不存在';
 		return;
 	}
@@ -44,14 +45,27 @@ function inspectUser(){
 	mysqli_close($conn);
     header('Location:/autumn/admin/');
 }
-function getConnect(){
-	$conn = new mysqli(DB_HOST,DB_USER,DB_PASS,DB_NAME);
-	if($conn->connect_error){
-		return null;
-	}
-	return $conn;
-}
+
 ?>
+<script src="../static/assets/vendors/jquery/jquery.js"></script>
+<script>
+	$(function($){
+		$('#email').on('blur',function(){
+			var val = $(this).val();
+			//校验格式
+			var regular = /[a-z A-Z 0-9]+@+[a-z A-Z 0-5]+\.[a-z A-Z]/;
+			if(!val || !regular.test(val)) return;
+			$.get('api/getImgUrl.php',{email : val},function(data){
+				if(!data){
+					$('.avatar').attr('src',"../static/assets/img/default.png");
+				}else{
+					$('.avatar').attr('src',data);
+				}
+				
+			});
+		});
+	})
+</script>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -67,7 +81,7 @@ assets/css/admin.css">
 <body>
   <div class="login">
     <form class="login-wrap" action="<?php echo $_SERVER['PHP_SELF']?>" method="post" novalidate>
-      <img class="avatar" src="../static
+      <img class="avatar" id="avatar" src="../static
 /
 assets/img/default.png">
       <!-- 有错误信息时展示 -->

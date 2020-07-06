@@ -1,28 +1,33 @@
-
-  <?php
+<?php
+	 
+      require_once '../config.php';
+      require_once XIU_DIRNAME.'/functions.php';
       $str = $_SERVER['PHP_SELF'];
       $arrStr = explode('/',$str);
       $cssName = rtrim($arrStr[3],'.php');
       #定义文章子节点名字
       $wenzhangSon = ['posts','post-add','categories'];
       $shezhiSon = ['nav-menus','slides','settings'];
-	if(empty($current_page)){
-		$current_page='';
-	}
-     ?>
+    	if(empty($current_page)){
+    		$current_page='';
+    	};
+      #获取用户信息
+      $user = getUser();
+      
+?>
 <div class="aside">
+  
     <div class="profile">
-      <img class="avatar" src="../static
-/
-uploads/avatar.jpg">
-      <h3 class="name">布头儿</h3>
+      <img class="avatar" id='avatar' src="<?php echo $user['avatar']?>">
+      <h3 class="name"><?php echo $user['nickname']?></h3>
     </div>
     <ul class="nav">
      <li<?php echo $current_page == 'dashboard' ? ' class="active"' : ''; ?>>
         <a href="index.php"><i class="fa fa-dashboard"></i>仪表盘</a>
       </li>
-        <li>
-		<a href="#menu-posts"<?php echo in_array($cssName, array('posts', 'post-add', 'categories')) ? '' : ' class="collapsed"'; ?> data-toggle="collapse">
+
+    <li <?php echo in_array($cssName,$wenzhangSon)? 'class="active"' : ''; ?>>
+		<a href="#menu-posts" data-toggle="collapse">
             <i class="fa fa-thumb-tack"></i>文章<i class="fa fa-angle-right"></i>
           </a>
           <ul id="menu-posts" class="collapse <?php echo in_array($cssName, $wenzhangSon)? ' in' : ''; ?>">
@@ -50,6 +55,5 @@ uploads/avatar.jpg">
 			</ul>
 		  </li>
 
-	
  
   </div>

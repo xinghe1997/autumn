@@ -1,8 +1,12 @@
-<?php 
-	session_start();
-	if(empty($_SESSION['user_id'])){
-		header('Location:/autumn/admin/login.php');
-	}
+<?php
+  require_once '../config.php';
+  require_once XIU_DIRNAME.'/functions.php';
+  #查询站点统计所有数据
+  $SumWenZhang= selectOneData("select count(1) as WenZhang from posts limit 1");
+  $SumZaoGao= selectOneData("select count(1) as ZaoGao from posts where status = 'drafted'");
+  $SumFenLei= selectOneData("select count(1) as FenLei from categories limit 1");
+  $SumPingLun= selectOneData("select count(1) as PingLun from comments limit 1");
+  $SumDBpinglun= selectOneData("select count(1) as DBpinglun from comments where status = 'held'");
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -40,9 +44,9 @@
               <h3 class="panel-title">站点内容统计：</h3>
             </div>
             <ul class="list-group">
-              <li class="list-group-item"><strong>10</strong>篇文章（<strong>2</strong>篇草稿）</li>
-              <li class="list-group-item"><strong>6</strong>个分类</li>
-              <li class="list-group-item"><strong>5</strong>条评论（<strong>1</strong>条待审核）</li>
+              <li class="list-group-item"><strong><?php echo $SumWenZhang['WenZhang']?></strong>篇文章（<strong><?php echo $SumZaoGao['ZaoGao']?></strong>篇草稿）</li>
+              <li class="list-group-item"><strong><?php echo $SumFenLei['FenLei']?></strong>个分类</li>
+              <li class="list-group-item"><strong><?php echo $SumPingLun['PingLun']?></strong>条评论（<strong><?php echo $SumDBpinglun['DBpinglun']?></strong>条待审核）</li>
             </ul>
           </div>
         </div>

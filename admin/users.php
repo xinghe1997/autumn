@@ -1,3 +1,6 @@
+<?php
+  require_once '../config.php';
+?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -139,5 +142,6 @@ assets/vendors/jquery/jquery.js"></script>
 /
 assets/vendors/bootstrap/js/bootstrap.js"></script>
   <script>NProgress.done()</script>
+
 </body>
 </html>

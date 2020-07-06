@@ -115,10 +115,11 @@ assets/vendors/nprogress/nprogress.js"></script>
       </table>
     </div>
   </div>
-
+  <?php echo $_SESSION['user_id'];?>
   <?php include 'inc/sidebar.php';?>
+
   <script src="../static
-/
+/ 
 assets/vendors/jquery/jquery.js"></script>
   <script src="../static
 /

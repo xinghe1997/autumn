@@ -1,8 +1,10 @@
 <?php
  if($_SERVER['REQUEST_METHOD'] === 'POST'){
+     
     inspectUser();
     
   }
+#登录校验
 function inspectUser(){
 	require_once '../config.php';
 	require_once 'inc/getConnect.php';
@@ -25,7 +27,6 @@ function inspectUser(){
 	}
 	$sql = "select * from `users` where `email` = '{$email}' limit 1";
 	$query = $conn->query($sql);
-	echo $query->num_rows;
 	if(empty($query->num_rows)){
 		$GLOBALS['error'] = '用户名不存在';
 		return;
@@ -39,16 +40,17 @@ function inspectUser(){
       $GLOBALS['error'] = 'password不正确';
       return;
     }
+
 	session_start();
 	$_SESSION['user_id'] = $result;
 	mysqli_free_result($query);
 	mysqli_close($conn);
-    header('Location:/autumn/admin/');
+  header('Location:/autumn/admin/');
 }
-
 ?>
 <script src="../static/assets/vendors/jquery/jquery.js"></script>
 <script>
+  //失去焦点请求头像地址
 	$(function($){
 		$('#email').on('blur',function(){
 			var val = $(this).val();
@@ -88,6 +90,7 @@ assets/img/default.png">
       <?php if(isset($GLOBALS['error'])):?>
       <div class="alert alert-danger">
         <strong><?php echo $GLOBALS['error']?></strong>
+
       </div>
     <?php endif?>
       <div class="form-group">

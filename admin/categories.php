@@ -1,3 +1,36 @@
+<?php
+	require_once '../config.php';
+	require_once XIU_DIRNAME.'/functions.php';
+	#添加数据与删除都走post
+	if($_SERVER['REQUEST_METHOD'] === "POST"){
+		#添加数据
+		insertData();
+	}
+	#查询数据
+	$cateGoriess = selectDatas("select * from `categories`");
+	
+	function insertData(){
+		if(empty($_POST['slug']) || empty($_POST['name'])){
+			$GLOBALS['error'] = '输入有误';
+			return;
+		}
+		$slug = $_POST['slug'];
+		$name = $_POST['name'];
+		if($slug == ' ' || $name == ' '){
+			$GLOBALS['error'] = '空数据';
+			return;
+		}
+		$sql = "insert into `categories`(slug,name) values ('{$slug}','{$name}')";
+		$result = executeds($sql);
+		if(!$result > 0){
+			$GLOBALS['error'] = '数据已存在';
+			return;
+		}else{
+			$GLOBALS['correct'] = '添加成功';
+		}
+	}
+?>
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -35,12 +68,18 @@ assets/vendors/nprogress/nprogress.js"></script>
         <h1>分类目录</h1>
       </div>
       <!-- 有错误信息时展示 -->
-      <!-- <div class="alert alert-danger">
-        <strong>错误！</strong>发生XXX错误
-      </div> -->
+    <?php if(!empty($GLOBALS['error'])):?>
+      <div class="alert alert-danger">
+        <strong>错误！</strong><?php echo $GLOBALS['error'];?>
+      </div>
+  	<?php elseif(!empty($GLOBALS['correct'])):?>
+  	  <div class="alert alert-success">
+        <strong></strong><?php echo $GLOBALS['correct'];?>
+      </div>
+    <?php endif?>
       <div class="row">
         <div class="col-md-4">
-          <form>
+          <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
             <h2>添加新分类目录</h2>
             <div class="form-group">
               <label for="name">名称</label>
@@ -71,41 +110,25 @@ assets/vendors/nprogress/nprogress.js"></script>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td class="text-center"><input type="checkbox"></td>
-                <td>未分类</td>
-                <td>uncategorized</td>
-                <td class="text-center">
-                  <a href="javascript:;" class="btn btn-info btn-xs">编辑</a>
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
-              <tr>
-                <td class="text-center"><input type="checkbox"></td>
-                <td>未分类</td>
-                <td>uncategorized</td>
-                <td class="text-center">
-                  <a href="javascript:;" class="btn btn-info btn-xs">编辑</a>
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
-              <tr>
-                <td class="text-center"><input type="checkbox"></td>
-                <td>未分类</td>
-                <td>uncategorized</td>
-                <td class="text-center">
-                  <a href="javascript:;" class="btn btn-info btn-xs">编辑</a>
-                  <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
-                </td>
-              </tr>
+			<?php foreach($cateGoriess as $val):?>
+				<tr>
+				<td class="text-center"><input type="checkbox"></td>
+				<td><?php echo $val['name']?></td>
+				<td><?php echo $val['slug']?></td>
+				<td class="text-center">
+					<a href="javascript:;" class="btn btn-info btn-xs">编辑</a>
+					<a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
+				</td>
+				</tr>
+             <?php endforeach?>
             </tbody>
           </table>
         </div>
       </div>
     </div>
   </div>
-
-  <?php include 'inc/sidebar.php';?>
+<?php include 'inc/sidebar.php';?>
+  
   <script src="../static
 /
 assets/vendors/jquery/jquery.js"></script>

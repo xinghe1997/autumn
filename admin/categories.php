@@ -1,14 +1,17 @@
 <?php
 	require_once '../config.php';
 	require_once XIU_DIRNAME.'/functions.php';
-	#添加数据与删除都走post
+	#接收删除页面返回的值，非空需报错
+  if(!empty($_GET['error'])){
+		$GLOBALS['error'] = '删除失败'; 
+	}
+  #判断post请求为添加
 	if($_SERVER['REQUEST_METHOD'] === "POST"){
-		#添加数据
 		insertData();
 	}
 	#查询数据
 	$cateGoriess = selectDatas("select * from `categories`");
-	
+	#添加数据
 	function insertData(){
 		if(empty($_POST['slug']) || empty($_POST['name'])){
 			$GLOBALS['error'] = '输入有误';
@@ -29,6 +32,7 @@
 			$GLOBALS['correct'] = '添加成功';
 		}
 	}
+
 ?>
 
 <!DOCTYPE html>
@@ -98,7 +102,7 @@ assets/vendors/nprogress/nprogress.js"></script>
         <div class="col-md-8">
           <div class="page-action">
             <!-- show when multiple checked -->
-            <a class="btn btn-danger btn-sm" href="javascript:;" style="display: none">批量删除</a>
+            <a id="delects" class="btn btn-danger btn-sm" href="categories-delect.php" style="display: none">批量删除</a>
           </div>
           <table class="table table-striped table-bordered table-hover">
             <thead>
@@ -109,15 +113,15 @@ assets/vendors/nprogress/nprogress.js"></script>
                 <th class="text-center" width="100">操作</th>
               </tr>
             </thead>
-            <tbody>
-			<?php foreach($cateGoriess as $val):?>
+          <tbody>
+			     <?php foreach($cateGoriess as $val):?>
 				<tr>
-				<td class="text-center"><input type="checkbox"></td>
+				<td class="text-center"><input type="checkbox" data-id="<?php echo $val['id']?>" class="xuanze"></td>
 				<td><?php echo $val['name']?></td>
 				<td><?php echo $val['slug']?></td>
 				<td class="text-center">
 					<a href="javascript:;" class="btn btn-info btn-xs">编辑</a>
-					<a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
+					<a href="categories-delect.php?id=<?php echo $val['id']?>" class="btn btn-danger btn-xs">删除</a>
 				</td>
 				</tr>
              <?php endforeach?>
@@ -136,5 +140,42 @@ assets/vendors/jquery/jquery.js"></script>
 /
 assets/vendors/bootstrap/js/bootstrap.js"></script>
   <script>NProgress.done()</script>
+<!-- 批量删除 -->
+<script>
+  $(function($){
+  	/**
+	var xuanze = $(".xuanze");
+  	var delects = $('#delects');
+  	var ids = [];
+  	xuanze.on('click',function(){
+  		var bool = false;
+  		xuanze.each(function(){
+  			if($(this).prop('checked')){
+  				bool = true;
+  			}
+  		});
+  		bool ? delects.css('display','') : delects.css('display','none');
+  	});
+  	*/
+  	var xuanze = $('.xuanze');
+  	var delects = $('#delects');
+  	var ids = [];
+  	xuanze.on('click',function(){
+  		var id = $(this).data('id');
+  		if($(this).prop('checked')){
+	  		ids.push(id);
+  		}else{
+  			ids.splice(ids.indexOf(id),1);
+  		}
+  	
+
+  		
+  		ids.length ? delects.css('display','') : delects.css('display','none');
+  		delects.prop('search','?id='+ids);
+  		console.log(ids);
+  	});
+
+  });
+</script>
 </body>
 </html>

@@ -4,3 +4,4 @@ define('X_DB_USER','root');
 define('X_DB_PASS','123456');
 define('X_DB_NAME','baixiu');
 define('XIU_DIRNAME',dirname(__FILE__));
+define('XIU_DELECT',0);
